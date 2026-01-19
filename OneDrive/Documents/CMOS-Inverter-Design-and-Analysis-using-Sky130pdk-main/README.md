@@ -70,13 +70,16 @@ The components used are as follows:
 4. ```gnd.sym``` (xschem device library)
 
 I generated the netlist using Xschem and then do DC analysis usng Ngspice to plot basic characteristic plots for nMOS and pMOS transistors, i.e. **Ids vs Vds** and **Ids vs Vgs**.
-![nMOS schematic](.\Images\nfet_01v8..png)<br>
+![NFET Characteristics](Images/nfet_01v8..png)<br>
 When I sweep Vgs (gate-to-source voltage) for different values of Vds (drain-to-source voltage) in DC analysis, the plot below are obtained:
-![Id vs Vgs](.\Images\NMOS id vs.png)<br>
-The above plot is for **Id vs Vgs** and we can see that the threshold voltage for the nMOS lies between 0.6V and 0.7V
 
+![Id vs Vgs](Images/NMOS%20id%20vs.png)<br>
+
+The above plot is for **Id vs Vgs** and we can see that the threshold voltage for the nMOS lies between 0.6V and 0.7V
 When I sweep Vds (drain-to-source voltage) for different values of Vgs (gate-to-source voltage) in DC analysis, the plot below are obtained:
-![Id vs Vds](.Images\NMOS id vs Vds.png)<br>
+
+![Id vs Vds](Images/NMOS%20id%20vs%20Vds.png)
+
 The above plot is for **Id vs Vds** and we can see the linear and saturation region of the curve of nMOS.
 
 
@@ -93,12 +96,12 @@ From the above plots and simulations, we get:
 3. Id = 0.711175 mA at Vds = 1.8V
 4. rds = 6.510506KΩ at Vds = 1.8V
 ### 2.2 Strong 0 and Weak 1
-![nMOS inverter](.\Images\NMOS_INV (2).png)<br><br>
-![nMOS inverter Transient](.\Images\Nmos inv Wave.png)<br>
+![nMOS inverter](Images/NMOS_INV%20(2).png)<br><br>
+![nMOS inverter Transient](Images/Nmos%20inv%20Wave.png)<br>
 In the above, when a square wave is applied to the NMOS inverter, a LOW input turns the NMOS OFF and the output is pulled up to 1.8 V. When the input is HIGH, the NMOS turns ON and operates in the linear region as a result it will act as a voltage controlled resistor. The output then forms a voltage divider and does not reach the full logic level. Hence, NMOS passes a strong 0 but only a weak 1.
 ### 2.3 Weak 0 and Strong 1
-![pMOS inverter](.\Images\Pmos_inv (2).png)<br><br>
-![pMOS inverter Transient](.\Images\Pmos inv wave.png)<br>
+![pMOS inverter](Images/Pmos_inv%20(2).png)<br><br>
+![pMOS inverter Transient](Images/Pmos%20inv%20wave.png)<br>
 The pMOS here passes a strong 1 but only a weak 0 because of the same reason which is explained for the nMOS. When input is LOW, the pMOS turns ON and operates in linear region acting as a voltage controlled resistor. 
 
 ## 3. CMOS Inverter Design and Analysis
@@ -107,16 +110,16 @@ From the above section, it is observed that pMOS passes strong 1 and nMOS passes
 So, the circuit of CMOS consists of pMOS transistor between Vdd and Vout and nMOS circuit between Vout and GND (series with pMOS). When we give input logic 0, pMOS is ON and nMOS is OFF which makes current flow from VDD to Vout resulting in output logic 1. Similarly, when we give input logic 1, nMOS is turned ON and pMOS is turned OFF which makes the current flow from Vout node to GND resulting in output logic 0. In this way, CMOS can provide **rail-to-rail** output.
 ### 3.2 Design of CMOS inverter circuit
 Using the above theory, I have used the standard 1.8V models of pMOS and nMOS from Skywater 130nm PDK to design a CMOS inverter. The schematic and symbol of the inverter designed using Xschem is given below:
-![CMOS inverter schematic](.\Images\LVS_CMOS.png)<br><br>
+![CMOS inverter schematic](Images/LVS_CMOS.png)<br><br>
 Although a CMOS inverter is conceptually simple, its design involves several important trade-offs between speed, power, noise margin, and area. In a CMOS inverter, optimizing one performance metric usually degrades another, so it requires careful balancing based on the target application and technology constraints. In this project I have tried to achieve ideal Vm = Vdd/2. This is important for having symmetric Noise Margins and Delays.<br>
 Theoretically to achieve this, I should take Wp = 2*Wn but models used from Skywater 130nm PDK, it is achieved when I take Wp = 3.5*Wn.
 ### 3.3.1 Noise Margin Analysis
 Noise margin is a measure of the inverter’s ability to tolerate noise without causing a logic error. It is derived directly from the Voltage Transfer Characteristics (VTC). The Voltage Transfer Characteristic (VTC) of a CMOS inverter represents the relationship between the output voltage (Vout) and the input voltage(Vin). It is obtained by performing a DC sweep of the input voltage while keeping the supply voltage constant. The VTC curve shows three operating regions: low-input/high-output, transition region, and high-input/low-output. The slope of the curve in the transition region indicates the inverter gain, and the switching threshold voltage Vm is defined as the point where Vin = Vout.<br>
-![VTC](./Images/vtc_char_cmos.jpg)
+![CMOS inverter VTC](Images/vtc_char_cmos.jpg)
 ![noise margin](./Images/noise_margin.png)<br>
 I have created a testbench for my designed inverter feeding it Vdd = 1.8V and a input pulse which oscillates between 0 to 1.8V and has a period of 6.6ns:
 After running simulation for DC analysis we get the results below:
-![CMOS inverter VTC](.\Images\CMOS_nseDC.png)<br>
+![CMOS inverter VTC](Images/CMOS_nseDC.png)
 From the above Voltage Transfer Characteristic curve of CMOS inverter, it can be seen that the Vm is very close to 0.9V i.e. half of 1.8V. Also, from the VTC, the following critical points can be found:<br><br>
     **VOH** - Maximum output voltage when it is logic '1'.<br>
     **VOL** - Minimun output voltage when it is logic '0'.<br>
@@ -142,7 +145,7 @@ Since we have obtained the Vm very close to 0.9, so the noise margins obatined a
 
 ### 3.3.2 Delay Analysis
 For the delay analysis, transient analysis is used since it is a time-domain phenomenon. I have used the same testbench that I used before for my inverter for Noise Margin analysis. The obtained transient analysis plot for Vin and Vout is shown below:
-![CMOS inverter tran](.\Images\CMOS_DLY anlys.png)<br>
+![CMOS inverter tran](Images/CMOS_DLY%20anlys.png)<br>
 From the above plot, I have calculated the propagation delay first. **Propagation delay** is defined as the time it takes for a change at the input of a gate to cause a corresponding change at the output. It is measured between the 50% points of the input and output voltage waveforms. In a CMOS inverter:<br>
 tpHL: Time delay when output falls from HIGH to LOW.<br>
 tpLH: Time delay when output rises from LOW to HIGH.<br>
@@ -156,26 +159,26 @@ The above rise and fall time analysis is for Wp = 3.5 and Wn = 1. Also it is def
 The rise time and fall time should be minimized in a CMOS inverter To reduce delay in cascaded logic (input-slew dependence). I tried to reduce it by following ways:
 1. **Increase supply power Vdd**: A higher Vdd could drive more current leading to faster transitions but it would increase dynamic power and short circuit in our circuit. So, I found that it is not preferred.
 2. **Increase width of transistors**: Increasing transistor widths could increase their drive strengths decreasing rise and fall time because it would reduce Ron. However, tradeoff here is area. So I made Wp = 4 and Wn = 2 and run the simulations:
-![rise and fall time](.\Images\INV_p=4_n=2.png)<br>
+![rise and fall time](Images/INV_p=4_n=2.png)<br>
 Here, I get unexpected results as trise decreased and tfall increased. This can be explained because in unloaded analysis, the internal capacitance also scales with the transistor width along with the increasing driving strengths. So I tried to perform loaded analysis by taking a load capacitance of 0.1pF:
-![rise and fall time](.\Images\INV_p=3.5_n=1.png)<br>
+![rise and fall time](Images/INV_p=3.5_n=1.png)<br>
 In the above unloaded analysis where I have taken Wp = 3.5 and Wn = 1, we get **trise = 341.163ps** and t**fall = 371.712ps**<br><br>
 In another unloaded analysis where I have taken Wp = 4 and Wn = 2, we get **trise = 301.795ps** and **tfall = 226.137ps**<br><br>
 It is observed that clearly both decreases here. trise decreased by a lesser amount compared to tfall because Wp if increased by 0.5 only and Wn is increased to twice. In loaded analysis, the presence of a large external load capacitance makes drive strength the dominant factor, resulting in predictable reductions in rise and fall times with increased transistor widths.<br><br>
 
 ### 3.3.3 Power Dissipation Analysis
 For Power dissipation I have done transient analysis of my loaded inverter testbench with Wp = 3.5 and Wn = 1. I have used the ```integ``` to perform integration of the current from Vdd source in the formula Pavg ​= (1/T) ∫[0→T] V_DD · I_DD(t) dt. For the time period in integration I have taken the second period from 6.6ns to 13.2ns since first period may conatain some anomaly.
-![power](.\Images\Pinst.png)<br>
+![power](Images/Pinst.png)<br>
 Since the current is very small I have scale it up by 1000, so that it can be seen properly on the plot. The result obtained after power analysis is **Power_avg = 50.654 μW**. This includes dynamic power and short-circuit power.
 
 ### 3.4 Layout Design of CMOS inverter
 At this stage I have tried to design a DRC-clean CMOS inverter layout corresponding to the schematic design, ensuring correct transistor sizing and proper connectivity. **Design Rule Check (DRC)** is a verification step used in VLSI layout design to ensure that the physical layout follows all fabrication rules defined by the technology, here it is SkyWater 130nm. I have used **MAGIC VLSI** and TCL language for designing the a standard full-custom layout of CMOS inverter. I have kept the transistor sizes in layout same as I have taken in schematic. For designing the layout, I have referred the metal stack diagram and Design Rules from the [SkyWater SKY130 PDK](https://skywater-pdk.readthedocs.io/en/main/rules/assumptions.html) documentation itself. Below is the metal stack diagram:
-![metal stack diagram](./Images/metal_stack.png)<br>​
+![metal stack diagram](Images/metal_stack.png)<br>​
 Below is the layout of the CMOS inverter I have designed and it is completed with 0 DRC errors.:<br>
-<img src = "![alt text](<CMOS_INV LAY.png>)" width = "70%" height = "70%"></img><br>
+<img src="Images/CMOS_INV%20LAY.png" width="70%" height="70%" alt="CMOS Inverter Layout"></img><br>
 I have extracted the parasitics from the circuit and those parasitics are written in the spice netlist of the above layout deisgn.
 
 ### 3.5 Layout vs Schematic
 Layout Versus Schematic (LVS) is a verification step used in VLSI design to ensure that the physical layout represents the same circuit as the schematic. I have used **Netgen** for LVS and it needs spice netlists of both layout and schematic. I have extracted the inv_layout.ext file from Magic and converted it inv_layout.spice. Below is the Result of LVS in Netgen:<br>
-![lvs](.\Images\FNL_LVS_res.png)<br>
+![lvs](Images/FNL_LVS_res.png)<br>
 The LVS result indicates that both the schematic and layout contain one NMOS and one PMOS transistor and four nets, corresponding to VDD, VSS, Vin, and Vout. Netgen reported that the two circuits match uniquely, confirming correct device count and connectivity between the schematic and the layout. Although some device geometry parameters (such as diffusion area, perimeter, and multiplicity) were not reported in the LVS output, the successful match confirms the logical equivalence of the design.
