@@ -1,0 +1,8 @@
+* NGSPICE file created from Cinv.ext - technology: sky130A
+
+.subckt Layo OUT IN VDD VSS
+X0 OUT IN VDD VDD sky130_fd_pr__pfet_01v8 ad=0.5214 pd=3.82 as=0.5214 ps=3.82 w=1.58 l=0.15
+X1 OUT IN VSS VSS sky130_fd_pr__nfet_01v8 ad=0.1485 pd=1.56 as=0.1485 ps=1.56 w=0.45 l=0.15
+.ends
+
+.end

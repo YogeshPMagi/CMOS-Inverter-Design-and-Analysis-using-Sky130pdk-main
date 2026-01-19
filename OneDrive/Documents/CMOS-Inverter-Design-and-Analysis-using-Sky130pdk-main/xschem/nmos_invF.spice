@@ -1,0 +1,22 @@
+** sch_path: /home/yogesh/.xschem/nmos_inv.sch
+**.subckt nmos_inv
+XM1 VOUT VIN GND GND sky130_fd_pr__nfet_01v8 L=0.15 W=1 nf=1 ad='int((nf+1)/2) * W/nf * 0.29' as='int((nf+2)/2) * W/nf * 0.29'
++ pd='2*int((nf+1)/2) * (W/nf + 0.29)' ps='2*int((nf+2)/2) * (W/nf + 0.29)' nrd='0.29 / W' nrs='0.29 / W'
++ sa=0 sb=0 sd=0 mult=1 m=1
+VIN VIN GND pulse(0 1.8 0 .3n .3n 6.6n 13.2n)
+VCC VCC GND 1.8
+R1 VCC VOUT 1k m=1
+C1 VOUT GND 50F m=1
+**** begin user architecture code
+
+.lib /home/yogesh/OpenLane/pdks/sky130A/libs.tech/ngspice/sky130.lib.spice tt
+.save all
+.control
+  tran 0.1n 30n
+  plot v(Vin) v(Vout)
+.endc
+
+**** end user architecture code
+**.ends
+.GLOBAL GND
+.end

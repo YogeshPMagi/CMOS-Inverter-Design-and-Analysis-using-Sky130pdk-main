@@ -1,0 +1,36 @@
+** sch_path: /home/yogesh/INV_coms_test.sch
+**.subckt INV_coms_test
+XX1 OUT IN VSS VSS sky130_fd_pr__nfet_01v8 L=0.15 W=0.45 nf=1 ad='int((nf+1)/2) * W/nf * 0.29' as='int((nf+2)/2) * W/nf * 0.29'
++ pd='2*int((nf+1)/2) * (W/nf + 0.29)' ps='2*int((nf+2)/2) * (W/nf + 0.29)' nrd='0.29 / W' nrs='0.29 / W'
++ sa=0 sb=0 sd=0 mult=1 m=1
+VIN IN GND pulse(0 1.8 1n 0.3n 0.3n 5n 10n)
+VSS1 VSS GND 0
+VDD VDD GND 1.8
+Xx0 OUT IN VDD VDD sky130_fd_pr__pfet_01v8 L=0.15 W=1.58 nf=1 ad='int((nf+1)/2) * W/nf * 0.29' as='int((nf+2)/2) * W/nf * 0.29'
++ pd='2*int((nf+1)/2) * (W/nf + 0.29)' ps='2*int((nf+2)/2) * (W/nf + 0.29)' nrd='0.29 / W' nrs='0.29 / W'
++ sa=0 sb=0 sd=0 mult=1 m=1
+**** begin user architecture code
+
+
+.lib /home/yogesh/OpenLane/pdks/sky130A/libs.tech/ngspice/sky130.lib.spice tt
+.save all
+
+.control
+
+  dc Vin 0 1.8 1m
+
+  let slope = deriv(v(OUT))
+  meas dc vil when slope=-1 cross=1
+  meas dc vih when slope=-1 cross=2
+
+  let nml = vil
+  let nmh = 1.8 - vih
+
+  print vil vih nml nmh
+  plot v(OUT) v(IN)
+.endc
+
+**** end user architecture code
+**.ends
+.GLOBAL GND
+.end
