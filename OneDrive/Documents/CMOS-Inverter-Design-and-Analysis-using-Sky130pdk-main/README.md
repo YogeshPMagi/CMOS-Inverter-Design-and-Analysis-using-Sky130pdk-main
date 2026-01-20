@@ -84,6 +84,7 @@ The above plot is for **Id vs Vds** and we can see the linear and saturation reg
 
 
 The design parameters for the NMOS and PMOS devices were derived from the SkyWater 130nm PDK characterization data. These baseline values (Id, gm, rds) represent the typical performance of 1.8V devices at the 130nm node and serve as the theoretical foundation for my inverter sizing.
+
 For the simulations of NMOS, we get:
 1. Id = 0.5009414 mA at Vgs = 1.8V
 2. gm = 0.5320934 mS at Vgs = 1.8V
@@ -146,20 +147,24 @@ Since we have obtained the Vm very close to 0.9, so the noise margins obatined a
 
 ### 3.3.2 Delay Analysis
 For the delay analysis, transient analysis is used since it is a time-domain phenomenon. I have used the same testbench that I used before for my inverter for Noise Margin analysis. The obtained transient analysis plot for Vin and Vout is shown below:
+
 ![CMOS inverter tran](Images/CMOS_DLY%20anlys.png)<br>
+
 From the above plot, I have calculated the propagation delay first. **Propagation delay** is defined as the time it takes for a change at the input of a gate to cause a corresponding change at the output. It is measured between the 50% points of the input and output voltage waveforms. In a CMOS inverter:<br>
 tpHL: Time delay when output falls from HIGH to LOW.<br>
 tpLH: Time delay when output rises from LOW to HIGH.<br>
 The average propagation delay is given by:<br>
 tp = (tpHL+tpLH)/2
+
 ![propagation delay](./Images/prop_delay.jpg)<br>
+
 So I have obtained **tpHL = 37.60ps** and **tpLH = 31.63ps**, then calculated **tp = 34.62ps**. <br>​
 Propagation delay in depends on the input, specifically the input transition time (**input slew rate**), as faster inputs generally lead to lesser delays. Propagation delay alone is sufficient only for an isolated gate with fixed input slew. In real digital systems, gates are cascaded, and since delay depends on input slew, rise and fall times must be known to correctly predict timing, power, and reliability of the entire path.
 The above rise and fall time analysis is for Wp = 1.58 and Wn = 0.45. Also it is defined for the transition when output goes from 90% to 10% for fall time, and from 10% to 90% transition for rise time. The results are **trise = 108.505ps** and t**fall = 69.12ps**<br>
 
 The rise time and fall time should be minimized in a CMOS inverter To reduce delay in cascaded logic (input-slew dependence). I tried to reduce it by following ways:
 1. **Increase supply power Vdd**: A higher Vdd could drive more current leading to faster transitions but it would increase dynamic power and short circuit in our circuit. So, I found that it is not preferred.
-2. **Increase width of transistors**: Increasing transistor widths could increase their drive strengths decreasing rise and fall time because it would reduce Ron. However, tradeoff here is area. So I made Wp = 4 and Wn = 2 and run the simulations:
+2. **Increase width of transistors**: Increasing transistor widths could increase their drive strengths decreasing rise and fall time because it would reduce Ron. However, tradeoff here is area. So I made Wp = 2.08 and Wn = 0.90 and run the simulations:
 Here, I get unexpected results as trise decreased and tfall increased. This can be explained because in unloaded analysis, the internal capacitance also scales with the transistor width along with the increasing driving strengths. So I tried to perform loaded analysis by taking a load capacitance of 0.1pF:
 ![rise and fall time](Images/inv_wp=1.58_wn=0.45.png)<br>
 In the above loaded analysis where I have taken Wp = 1.58 and Wn = 0.45, we get **trise = 689.73ps** and t**fall = 824.49ps**<br><br>
@@ -169,7 +174,7 @@ In another loaded analysis  I have taken Wp = 2.08 and Wn = 0.90, we get **trise
 It is observed that clearly both decreases here. trise decreased by a lesser amount compared to tfall because Wp if increased by 0.5 only and Wn is increased to twice. In loaded analysis, the presence of a large external load capacitance makes drive strength the dominant factor, resulting in predictable reductions in rise and fall times with increased transistor widths.<br><br>
 
 ### 3.3.3 Power Dissipation Analysis
-For Power dissipation I have done transient analysis of my loaded inverter testbench with Wp = 3.5 and Wn = 1. I have used the ```integ``` to perform integration of the current from Vdd source in the formula Pavg ​= (1/T) ∫[0→T] V_DD · I_DD(t) dt. For the time period in integration I have taken the second period from 6.6ns to 13.2ns since first period may conatain some anomaly.
+For Power dissipation I have done transient analysis of my loaded inverter testbench with Wp = 1.58 and Wn = 0.45. I have used the ```integ``` to perform integration of the current from Vdd source in the formula Pavg ​= (1/T) ∫[0→T] V_DD · I_DD(t) dt. For the time period in integration I have taken the second period from 6.6ns to 13.2ns since first period may conatain some anomaly.
 ![power](Images/Pinst.png)<br>
 Since the current is very small I have scale it up by 1000, so that it can be seen properly on the plot. The result obtained after power analysis is **Power_avg = 50.654 μW**. This includes dynamic power and short-circuit power.
 
