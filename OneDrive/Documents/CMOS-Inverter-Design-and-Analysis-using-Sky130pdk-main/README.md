@@ -83,18 +83,19 @@ When I sweep Vds (drain-to-source voltage) for different values of Vgs (gate-to-
 The above plot is for **Id vs Vds** and we can see the linear and saturation region of the curve of nMOS.
 
 
-For designing an inverter, I have choose the highest value available for Vds which will be 1.8V and find values of drain current (Id), transconductance (gm), and output resistance (rds) at Vgs = 1.8V and Vds = 1.8V:
-From the above plots and simulations, we get:
+The design parameters for the NMOS and PMOS devices were derived from the SkyWater 130nm PDK characterization data. These baseline values (Id, gm, rds) represent the typical performance of 1.8V devices at the 130nm node and serve as the theoretical foundation for my inverter sizing.
+For the simulations of NMOS, we get:
 1. Id = 0.5009414 mA at Vgs = 1.8V
 2. gm = 0.5320934 mS at Vgs = 1.8V
 3. Id = 0.5009414 mA at Vds = 1.8V
 4. rds = 19.30674KΩ at Vds = 1.8V
-We have found all the important values we needed for nMOS and we can do the same for pMOS. The main objective is to decide the aspect ratio to achieve a symmetric CMOS inverter with equal driving strengths. After doing some experiments, I have obtained that at Wp = 3.5 Wn, keeping the L same at 0.15μm. So, After performing same simulations for pMOS at W = 3.5:
-From the above plots and simulations, we get:
+   
+For the simulations of PMOS, we get:
 1. Id = 0.711175 mA at Vgs = 1.8V
 2. gm = 0.8593639 mS at Vgs = 1.8V
 3. Id = 0.711175 mA at Vds = 1.8V
 4. rds = 6.510506KΩ at Vds = 1.8V
+   
 ### 2.2 Strong 0 and Weak 1
 ![nMOS inverter](Images/NMOS_INV%20(2).png)<br><br>
 ![nMOS inverter Transient](Images/Nmos%20inv%20Wave.png)<br>
@@ -131,16 +132,16 @@ The values of the points obtained from the above plot:
 | Voltage | Value |
 |---------|-------|
 | Vm | 0.899V |
-|   VOH   | 1.746V  |
-|   VOL   |  0.0701V   |
-|   VIH   | 1.026V |
-|   VIL   | 0.775V |
+|   VOH   | 1.8  |
+|   VOL   |  0V   |
+|   VIH   | 1.037V |
+|   VIL   | 0.782V |
 
 There are two such values of Noise margins for a binary system. The calculation of Noise margin are done using the two expressions:<br>
 NOISE MARGIN LOW: **NML = VIL - VOL**<br>
 NOISE MARGIN HIGH: **NMH = VOH - VIH**<br>
 
-The Noise margin values obtained for our inverter are **NML = 0.705V** and **NMH = 0.72V**.
+The Noise margin values obtained for our inverter are **NML = 0.782V** and **NMH = 0.763V**.
 Since we have obtained the Vm very close to 0.9, so the noise margins obatined are very close to each other.
 
 ### 3.3.2 Delay Analysis
