@@ -160,11 +160,12 @@ The above rise and fall time analysis is for Wp = 1.58 and Wn = 0.45. Also it is
 The rise time and fall time should be minimized in a CMOS inverter To reduce delay in cascaded logic (input-slew dependence). I tried to reduce it by following ways:
 1. **Increase supply power Vdd**: A higher Vdd could drive more current leading to faster transitions but it would increase dynamic power and short circuit in our circuit. So, I found that it is not preferred.
 2. **Increase width of transistors**: Increasing transistor widths could increase their drive strengths decreasing rise and fall time because it would reduce Ron. However, tradeoff here is area. So I made Wp = 4 and Wn = 2 and run the simulations:
-![rise and fall time](Images/INV_p=4_n=2.png)<br>
 Here, I get unexpected results as trise decreased and tfall increased. This can be explained because in unloaded analysis, the internal capacitance also scales with the transistor width along with the increasing driving strengths. So I tried to perform loaded analysis by taking a load capacitance of 0.1pF:
-![rise and fall time](Images/inv_p=1.58_n=0.45.png)<br>
-In the above unloaded analysis where I have taken Wp = 1.58 and Wn = 0.45, we get **trise = 108.505ps** and t**fall = 69.12ps**<br><br>
-In another loaded analysis  I have taken Wp = 2 and Wn = 1.50, we get **trise = 89.67ps** and **tfall = 119.18ps**<br><br>
+![rise and fall time](Images/inv_wp=1.58_wn=0.45.png)<br>
+In the above loaded analysis where I have taken Wp = 1.58 and Wn = 0.45, we get **trise = 108.505ps** and t**fall = 69.12ps**<br><br>
+
+![rise and fall time](inv_wp=2.08_wn=0.90.png)<br>
+In another loaded analysis  I have taken Wp = 2.08 and Wn = 0.90, we get **trise = 89.67ps** and **tfall = 119.18ps**<br><br>
 It is observed that clearly both decreases here. trise decreased by a lesser amount compared to tfall because Wp if increased by 0.5 only and Wn is increased to twice. In loaded analysis, the presence of a large external load capacitance makes drive strength the dominant factor, resulting in predictable reductions in rise and fall times with increased transistor widths.<br><br>
 
 ### 3.3.3 Power Dissipation Analysis
